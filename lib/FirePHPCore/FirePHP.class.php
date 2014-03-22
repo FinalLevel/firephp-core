@@ -1022,7 +1022,33 @@ class FirePHP {
                     if (isset($trace[$i]['file'])
                        && substr($this->_standardizePath($trace[$i]['file']), -1*$fbLength, $fbLength) == $parentFolder.'/fb.php') {
                         /* Skip FB::fb() */
-                    } else {
+					} else
+					if (!isset($trace[$i]['file'])) {
+						/* Skip built in */
+					} else
+					if (
+						isset($trace[$i]['class'])
+						&& isset($this->objectFilters[strtolower($trace[$i]['class'])])
+//						&& (
+//							empty($this->objectFilters[strtolower($trace[$i]['class'])])
+//							|| in_array($trace[$i]['function'], $this->objectFilters[strtolower($trace[$i]['class'])])
+//						)
+					) {
+						/* skip filtered class */
+                    } else
+					if (
+						!isset($trace[$i]['class'])
+						&& isset($trace[$i]['function'])
+						&& isset($this->objectFilters[''])
+						&& in_array($trace[$i]['function'], $this->objectFilters[''])
+					) {
+						/* skip filtered function */
+					} else {
+						$tmp = $i;
+						while (--$i >= 0 && !isset($trace[$i]['file']));
+						if ($i < 0)
+							$i = $tmp;
+//						die('<pre>' . $i . ': ' . print_r($trace, true) . '</pre>');
                         $meta['file'] = isset($trace[$i]['file']) ? $this->_escapeTraceFile($trace[$i]['file']) : '';
                         $meta['line'] = isset($trace[$i]['line']) ? $trace[$i]['line'] : '';
                         break;
