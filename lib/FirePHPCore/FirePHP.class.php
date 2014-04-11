@@ -749,7 +749,7 @@ class FirePHP {
                 // Simply echo the error out to the page
                 echo '<div style="border: 2px solid red; font-family: Arial; font-size: 12px; background-color: lightgray; padding: 5px;"><span style="color: red; font-weight: bold;">FirePHP ERROR:</span> Headers already sent in <b>' . $filename . '</b> on line <b>' . $linenum . '</b>. Cannot send log data to FirePHP. You must have Output Buffering enabled via ob_start() or output_buffering ini directive.</div>';
             } else {
-                throw $this->newException('Headers already sent in ' . $filename . ' on line ' . $linenum . '. Cannot send log data to FirePHP. You must have Output Buffering enabled via ob_start() or output_buffering ini directive.');
+                throw $this->newException('Headers already sent in ' . $filename . ' on line ' . $linenum . '. Message: ' . print_r($object, true));
             }
         }
       
